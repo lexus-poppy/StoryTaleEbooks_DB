@@ -114,8 +114,57 @@ VALUES
     ),
     (
       3, '6.00', '2026-04-15'
+    ),
+    (
+      4, '4.00', '2026-03-14'
     );
-    
 
+-- INSERT data into orders TABLE
+
+INSERT INTO orders (
+      orderID,
+      totalPrice,
+      couponID,
+      memberID
+    )
+VALUES
+    (
+      101, '6.97', 1, 1001
+    ),
+    (
+      102, '11.98', 2, 1002
+    ),
+    (
+      103, '11.99', 3, 1003
+    ),
+    (
+      104, '22.78', 4, 1004
+    );
+
+-- INSERT data into booksAndOrders TABLE
+INSERT INTO booksAndOrders (
+      booksAndOrdersID,
+      ISBN,
+      orderID,
+      QTY,
+      cost,
+      totalCost
+    )
+VALUES
+    (
+      1, '9780316580571', 101, 1, '4.99', '4.99'
+    ),
+    (
+      2, '9780345384362', 101, 2, '1.99', '3.98'
+    ),
+    (
+      3, '9788284321318', 102, 2, '7.99', '15.98'
+    ),
+    (
+      4, '9780316569842', 103, 1, '14.99', '14.99'
+    ),
+    (
+      5, '9788501116536', 104, 2, '11.89', '23.78'
+    );
 SET FOREIGN_KEY_CHECKS=1;
 COMMIT;
