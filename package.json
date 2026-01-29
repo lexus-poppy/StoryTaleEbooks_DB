@@ -1,0 +1,20 @@
+{
+  "name": "storytaleebooks_db",
+  "version": "1.0.0",
+  "description": "Erika Brown",
+  "homepage": "https://github.com/lexus-poppy/StoryTaleEbooks_DB#readme",
+  "bugs": {
+    "url": "https://github.com/lexus-poppy/StoryTaleEbooks_DB/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lexus-poppy/StoryTaleEbooks_DB.git"
+  },
+  "license": "ISC",
+  "author": "Erika Brown and Benjamin Smithynunta",
+  "type": "commonjs",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
