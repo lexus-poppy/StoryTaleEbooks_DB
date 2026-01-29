@@ -14,7 +14,9 @@
   "author": "Erika Brown and Benjamin Smithynunta",
   "type": "commonjs",
   "main": "app.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  }
+"scripts": {
+    "development": "npx nodemon app.js",
+    "production": "npx forever start app.js",
+    "stop_production": "npx forever stop app.js"
+},
 }
