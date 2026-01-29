@@ -14,9 +14,16 @@
   "author": "Erika Brown and Benjamin Smithynunta",
   "type": "commonjs",
   "main": "app.js",
-"scripts": {
+  "scripts": {
     "development": "npx nodemon app.js",
     "production": "npx forever start app.js",
     "stop_production": "npx forever stop app.js"
-},
+  },
+  "dependencies": {
+    "express": "^5.2.1",
+    "express-handlebars": "^8.0.4",
+    "forever": "^4.0.3",
+    "mysql2": "^3.16.2",
+    "nodemon": "^3.1.11"
+  }
 }
