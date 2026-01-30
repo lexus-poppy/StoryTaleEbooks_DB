@@ -76,10 +76,10 @@ INSERT INTO members (
       email
     )
 VALUES
-    (1001, 'Alisha', 'Dickson', '971-239-9898', 'dickson.a@gmail.com'),
-    (1002, 'Edward', 'Harrington', '503-827-2019', 'harrington.e@outlook.com'),
-    (1003, 'Jamal', 'Malicena', '541-920-8201', 'jamal.malicena@hotmail.com'),
-    (1004, 'Tamara', 'Fenrick', '503-201-2232', 'fenrick.tamara@proton.me');
+    (1, 'Alisha', 'Dickson', '971-239-9898', 'dickson.a@gmail.com'),
+    (2, 'Edward', 'Harrington', '503-827-2019', 'harrington.e@outlook.com'),
+    (3, 'Jamal', 'Malicena', '541-920-8201', 'jamal.malicena@hotmail.com'),
+    (4, 'Tamara', 'Fenrick', '503-201-2232', 'fenrick.tamara@proton.me');
 
 -- INSERT data into books TABLE
 
@@ -129,16 +129,16 @@ INSERT INTO orders (
     )
 VALUES
     (
-      101, '6.97', 1, 1001
+      1, '6.97', 1, 1
     ),
     (
-      102, '11.98', 2, 1002
+      2, '11.98', 2, 2
     ),
     (
-      103, '11.99', 3, 1003
+      3, '11.99', 3, 3
     ),
     (
-      104, '22.78', 4, 1004
+      4, '22.78', 4, 4
     );
 
 -- INSERT data into booksAndOrders TABLE
@@ -152,19 +152,19 @@ INSERT INTO booksAndOrders (
     )
 VALUES
     (
-      1, '9780316580571', 101, 1, '4.99', '4.99'
+      1, '9780316580571', 1, 1, '4.99', '4.99'
     ),
     (
-      2, '9780345384362', 101, 2, '1.99', '3.98'
+      2, '9780345384362', 1, 2, '1.99', '3.98'
     ),
     (
-      3, '9788284321318', 102, 2, '7.99', '15.98'
+      3, '9788284321318', 2, 2, '7.99', '15.98'
     ),
     (
-      4, '9780316569842', 103, 1, '14.99', '14.99'
+      4, '9780316569842', 3, 1, '14.99', '14.99'
     ),
     (
-      5, '9788501116536', 104, 2, '11.89', '23.78'
+      5, '9788501116536', 4, 2, '11.89', '23.78'
     );
 SET FOREIGN_KEY_CHECKS=1;
 COMMIT;
