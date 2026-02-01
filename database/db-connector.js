@@ -13,3 +13,8 @@ const pool = mysql.createPool({
 
 // Export it for use in our application
 module.exports = pool;
+
+// Citation for the following function:
+// Date: 2/01/2026
+// Copied from /OR/ Adapted from /OR/ Based on:
+// Source URL: https://canvas.oregonstate.edu/courses/2031764/pages/exploration-overview-of-the-web-application-development-process?module_item_id=26243420
