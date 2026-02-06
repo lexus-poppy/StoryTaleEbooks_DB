@@ -35,18 +35,12 @@ app.get('/', async function (req, res) {
 app.get('/bsg-people', async function (req, res) {
     try {
         // Create and execute our queries
-        const query1 = `SELECT members.firstName, members.lastName FROM members /
-        JOIN orders ON BooksAndOrders.orderID = orders.orderID /
-        JOIN orders ON members.memberID = orders.orderID /
-        JOIN books ON BooksAndOrders.ISBN = books.ISBN /
-        GROUP BY books ISBN /
-        ORDER BY members.lastName ASC;
-        const query2 = 'SELECT * FROM books;';
+        const query1 = `SELECT memberID, firstName, lastName, email, phoneNumber FROM members ORDER BY lastName ASC;
+        const query2 = 'SELECT * FROM members;';
         const [orders] = await db.query(query1);
         const [books] = await db.query(query2);
 
-        // Render the bsg-people.hbs file, and also send the renderer
-        //  an object that contains our bsg_people and bsg_homeworld information
+
         res.render('members', { orders: orders, books: books });
     } catch (error) {
         console.error('Error executing queries:', error);
