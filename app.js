@@ -35,7 +35,7 @@ app.get('/', async function (req, res) {
 app.get('/bsg-people', async function (req, res) {
     try {
         // Create and execute our queries
-        const query1 = `SELECT memberID, firstName, lastName, email, phoneNumber FROM members ORDER BY lastName ASC;
+        const query1 = `SELECT memberID, firstName, lastName, email, phoneNumber FROM members ORDER BY lastName ASC;`;
         const query2 = 'SELECT * FROM members;';
         const [orders] = await db.query(query1);
         const [books] = await db.query(query2);
