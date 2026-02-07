@@ -5,7 +5,7 @@
     <thead>
         {{! For the table header row, we print the DB attribute names }}
         <tr>
-            {{#each member.[0]}}
+            {{#each members.[0]}}
             <th>
                 {{@key}}
             </th>
@@ -13,9 +13,10 @@
             <th></th>
         </tr>
     </thead>
+
     <tbody>
-        {{! For each row, print the memberID, firstName, lastName, phoneNumber, email}}
-        {{#each member}}
+        {{! For each row, print the id, firstName, lastName, phoneNumber, email }}
+        {{#each members}}
         <tr>
             <td>{{this.memberID}}</td>
             <td>{{this.firstName}}</td>
@@ -23,12 +24,12 @@
             <td>{{this.phoneNumber}}</td>
             <td>{{this.email}}</td>
 
-            {{! DELETE form}}
-            <form id="delete_member_form">
-                <input type="hidden" name="delete_member_id" value="{{this.memberID}}" />
-                <input type="hidden" name="delete_member_name" value="{{this.firstName}}" {{this.lastName}} />
+            {{! DELETE form }}
+            <form id='delete_member_form'>
+                <input type='hidden' name='delete_member_id' value='{{this.memberID}}' />
+                <input type='hidden' name='delete_member_name' value='{{this.firstName}} {{this.lastName}}' />
                 <td>
-                    <button type="submit">
+                    <button type='submit'>
                         Delete
                     </button>
                 </td>
@@ -38,32 +39,32 @@
     </tbody>
 </table>
 
-{{! CREATE form}}
+{{! CREATE form }}
 <h2>Create a Member</h2>
-<form class="cuForm" id="create_member_form">
-    <label for="create_member_firstName">First Name: </label>
-    <input type="text" name="create_member_firstName" id="create_member_firstName" required />
-    
-    <label for="create_member_lastName">Last Name: </label>
-    <input type="text" name="create_member_lastName" id="create_member_lastName" required/>
+<form class='cuForm' id='create_member_form'>
+    <label for='create_member_firstName'>First Name: </label>
+    <input type='text' name='create_member_firstName' id='create_member_firstName' required />
 
-    <label for="create_member_phoneNumber">Phone Number: </label>
-    <input type="text" name="create_member_phoneNumber" id="create_member_phoneNumber" required />
+    <label for='create_member_lastName'>Last Name: </label>
+    <input type='text' name='create_member_lastName' id='create_member_lastName' required />
 
-    <label for="create_member_email">Email: </label>
-    <input type="text" name="create_member_email" id="create_member_email" required />
+    <label for='create_member_phoneNumber'>Phone Number: </label>
+    <input type='text' name='create_member_phoneNumber' id='create_member_phoneNumber' required />
 
-    <input type="submit" />
+    <label for='create_member_email'>Email: </label>
+    <input type='text' name='create_member_email' id='create_member_email' required />
+
+    <input type='submit' />
 </form>
 
 {{! UPDATE form }}
 <h2>Update a Member</h2>
-<form class="cuForm" id="update_member_form">
-    <label for="update_member_id">Member to Update: </label>
-    <select name="update_member_id" id="update_member_id" required>
-        <option value="" disabled selected>Select a Member</option>
-        {{#each member}}
-        <option value="{{this.memberID}}" required>
+<form class='cuForm' id='update_member_form'>
+    <label for='update_member_id'>Member to Update: </label>
+    <select name='update_member_id' id='update_member_id' required>
+        <option value='' disabled selected>Select a Member</option>
+        {{#each members}}
+        <option value='{{this.memberID}}' required>
             {{this.memberID}}
             -
             {{this.firstName}}
@@ -72,13 +73,13 @@
         {{/each}}
     </select>
 
-    <label for="update_member_phoneNumber">Phone Number: </label>
-    <input type="text" name="update_member_phoneNumber" id="update_member_phoneNumber" required />
+    <label for='update_member_phoneNumber'>Phone Number: </label>
+    <input type='text' name='update_member_phoneNumber' id='update_member_phoneNumber' />
 
-    <label for="update_member_email">Email: </label>
-    <input type="text" name="update_member_email" id="update_member_email" required />
+    <label for='update_member_email'>Email: </label>
+    <input type='text' name='update_member_email' id='update_member_email' />
 
-    <input type="submit" />        
+    <input type='submit' />
 </form>
 
 // Citation for the following function:
