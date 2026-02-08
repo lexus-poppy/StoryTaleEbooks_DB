@@ -3,97 +3,86 @@
 {{! READ table }}
 <table>
     <thead>
-        {{! For the table header row, we print the DB attribute names }}
         <tr>
+            {{! For the table header row, we print the DB attribute names }}
             {{#each books.[0]}}
             <th>
                 {{@key}}
             </th>
             {{/each}}
-            <th></th>
+            <th>Actions</th>
         </tr>
     </thead>
 
     <tbody>
-        {{! For each row, print the isbn, title, author, publisher, publishedDate, and genre }}
+        {{! For each row, print ISBN, title, author, publisher, publishedDate, and genre }}
         {{#each books}}
         <tr>
-            <td>{{this.isbn}}</td>
+            <td>{{this.ISBN}}</td>
             <td>{{this.title}}</td>
             <td>{{this.author}}</td>
             <td>{{this.publisher}}</td>
             <td>{{this.publishedDate}}</td>
             <td>{{this.genre}}</td>
-
-            {{! DELETE form }}
-            <form id='delete_book_form'>
-                <input type='hidden' name='delete_book_isbn' value='{{this.isbn}}' />
-                <input type='hidden' name='delete_book_name' value='{{this.title}} {{this.author}}' />
-                <td>
-                    <button type='submit'>
-                        Delete
-                    </button>
-                </td>
-            </form>
+            <td>
+                <button type="button" onclick="deleteBook('{{this.ISBN}}')">Delete</button>
+            </td>
         </tr>
         {{/each}}
     </tbody>
 </table>
 
 {{! CREATE form }}
-<h2>Create a Book</h2>
-<form class='cuForm' id='create_book_form'>
-    <label for='create_book_isbn'>ISBN: </label>
-    <input type='text' name='create_book_isbn' id='create_book_isbn' required />
+<h2>Add a New Book</h2>
+<form action="/add-book-form" method="POST" id="add-book-form">
+    <label for='ISBN'>ISBN: </label>
+    <input type='text' name='ISBN' id='ISBN' required />
 
-    <label for='create_book_title'>Title: </label>
-    <input type='text' name='create_book_title' id='create_book_title' required />
+    <label for='title'>Title: </label>
+    <input type='text' name='title' id='title' required />
 
---LEFT OFF HERE
-    <label for='create_person_homeworld'>Homeworld: </label>
-    <select name='create_person_homeworld' id='create_person_homeworld'>
-        <option value='NULL' selected>Select a Planet</option>
-        <option value='NULL'>&lt; None &gt;</option>
-        {{#each homeworlds}}
-        <option value='{{this.id}}' required>{{this.name}}</option>
-        {{/each}}
-    </select>
+    <label for='author'>Author: </label>
+    <input type='text' name='author' id='author' required />
 
-    <label for='create_person_age'>Age:</label>
-    <input type='number' name='create_person_age' id='create_person_age' min='0' />
+    <label for='publisher'>Publisher: </label>
+    <input type='text' name='publisher' id='publisher' />
 
-    <input type='submit' />
+    <label for='publishedDate'>Published Date: </label>
+    <input type='date' name='publishedDate' id='publishedDate' />
+
+    <label for='genre'>Genre: </label>
+    <input type='text' name='genre' id='genre' required />
+
+    <input type='submit' value="Add Book"/>
 </form>
 
 {{! UPDATE form }}
-<h2>Update a Person</h2>
-<form class='cuForm' id='update_person_form'>
-    <label for='update_person_id'>Person to Update: </label>
-    <select name='update_person_id' id='update_person_id' required>
-        <option value='' disabled selected>Select a Person</option>
-        {{#each people}}
-        <option value='{{this.id}}' required>
-            {{this.id}}
-            -
-            {{this.fname}}
-            {{this.lname}}
-        </option>
+<h2>Update a Book</h2>
+<p>To update a book, select its title from the dropdown and update the fields below.</p>
+<form class='cuForm' id='update-book-form'>
+    <label for='update_isbn'>Book to Update: </label>
+    <select name='update_isbn' id='update_isbn' required>
+        <option value='' disabled selected>Select a Book</option>
+        {{#each books}}
+        <option value='{{this.ISBN}}'>{{this.title}} ({{this.ISBN}})</option>
         {{/each}}
     </select>
 
-    <label for='update_person_homeworld'>Homeworld: </label>
-    <select name='update_person_homeworld' id='update_person_homeworld'>
-        <option value='NULL' disabled selected>Select a Planet</option>
-        <option value='NULL'>&lt; None &gt;</option>
-        {{#each homeworlds}}
-        <option value='{{this.id}}' required>
-            {{this.name}}
-        </option>
-        {{/each}}
-    </select>
+    <label for='update_title'>New Title: </label>
+    <input type='text' name='update_title' id='update_title' />
 
-    <label for='update_person_age'>Age: </label>
-    <input type='number' name='update_person_age' id='update_person_age' min='0' />
+    <label for='update_genre'>New Genre: </label>
+    <input type='text' name='update_genre' id='update_genre' />
 
-    <input type='submit' />
+    <input type='submit' value="Update Book"/>
 </form>
+
+<script src="./js/update_book.js"></script>
+<script src="./js/delete_book.js"></script>
+
+{{!--
+Citation for the following function:
+Date: 2/08/2026
+Copied from /OR/ Adapted from /OR/ Based on:
+Source URL: https://canvas.oregonstate.edu/courses/2031764/pages/exploration-overview-of-the-web-application-development-process?module_item_id=26243420
+--}}
