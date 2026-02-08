@@ -23,17 +23,8 @@
             <td>{{this.lastName}}</td>
             <td>{{this.phoneNumber}}</td>
             <td>{{this.email}}</td>
-
-            {{! DELETE form }}
-            <form id='delete_member_form'>
-                <input type='hidden' name='delete_member_id' value='{{this.memberID}}' />
-                <input type='hidden' name='delete_member_name' value='{{this.firstName}} {{this.lastName}}' />
-                <td>
-                    <button type='submit'>
-                        Delete
-                    </button>
-                </td>
-            </form>
+            
+            <button type="button" onclick="deleteMember({{this.memberID}})">Delete</button>
         </tr>
         {{/each}}
     </tbody>
@@ -41,20 +32,20 @@
 
 {{! CREATE form }}
 <h2>Create a Member</h2>
-<form class='cuForm' id='create_member_form'>
-    <label for='create_member_firstName'>First Name: </label>
-    <input type='text' name='create_member_firstName' id='create_member_firstName' required />
+<form action="/members" method="POST" id="add-member-form">
+    <label for='firstName'>First Name: </label>
+    <input type='text' name='firstName' id='firstName' required />
 
-    <label for='create_member_lastName'>Last Name: </label>
-    <input type='text' name='create_member_lastName' id='create_member_lastName' required />
+    <label for='lastName'>Last Name: </label>
+    <input type='text' name='lastName' id='lastName' required />
 
-    <label for='create_member_phoneNumber'>Phone Number: </label>
-    <input type='text' name='create_member_phoneNumber' id='create_member_phoneNumber' required />
+    <label for='phoneNumber'>Phone Number: </label>
+    <input type='text' name='phoneNumber' id='phoneNumber' required />
 
-    <label for='create_member_email'>Email: </label>
-    <input type='text' name='create_member_email' id='create_member_email' required />
+    <label for='email'>Email: </label>
+    <input type='text' name='email' id='email' required />
 
-    <input type='submit' />
+    <input type='submit' value="Add Member"/>
 </form>
 
 {{! UPDATE form }}
@@ -73,16 +64,11 @@
         {{/each}}
     </select>
 
-    <label for='update_member_phoneNumber'>Phone Number: </label>
-    <input type='text' name='update_member_phoneNumber' id='update_member_phoneNumber' />
+    <label for='phoneNumber'>Phone Number: </label>
+    <input type='text' name='phoneNumber' id='update_phoneNumber' />
 
-    <label for='update_member_email'>Email: </label>
-    <input type='text' name='update_member_email' id='update_member_email' />
+    <label for='email'>Email: </label>
+    <input type='text' name='email' id='update_email' />
 
-    <input type='submit' />
+    <input type='submit' value="Update Member"/>
 </form>
-
-// Citation for the following function:
-// Date: 2/01/2026
-// Copied from /OR/ Adapted from /OR/ Based on:
-// Source URL: https://canvas.oregonstate.edu/courses/2031764/pages/exploration-overview-of-the-web-application-development-process?module_item_id=26243420
