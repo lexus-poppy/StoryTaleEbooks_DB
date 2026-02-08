@@ -1,0 +1,63 @@
+<h1>Coupons</h1>
+{{! READ Table }}
+<table id="coupons-table">
+  <thead>
+    <tr>
+      {{#each coupons.[0]}}
+      <th>{{@key}}</th>
+      {{/each}}
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each coupons}}
+    <tr data-value="{{this.couponID}}">
+      <td>{{this.couponID}}</td>
+      <td>{{this.couponDiscount}}</td>
+      <td>{{this.expirationDate}}</td>
+      <td>
+        <button type="button" onclick="deleteCoupon({{this.couponID}})">Delete</button>
+      </td>
+      {{/each}}
+  </tbody>
+</table>
+
+{{! CREATE Form }}
+<h2>Create a Coupon</h2>
+<form action="/add-coupon-form" method="POST" id="add-coupon-form">
+  <label for='couponDiscount'>Discount Amount ($): </label>
+  <input type='number' step="0.01" name='couponDiscount' id='couponDiscount' required />
+
+  <label for='expirationDate'>Expiration Date: </label>
+  <input type='date' name='expirationDate' id='expirationDate' required />
+
+  <input type='submit' value="Add Coupon" />
+
+  {{! UPDATE Form }}
+  <h2>Update a Coupon</h2>
+  <form class='cuForm' id='update-coupon-form'>
+    <label for='update_coupon_id'>Coupon to Update: </label>
+    <select name='update_coupon_id' id='update_coupon_id' required>
+      <option value='' disabled select>Select a Coupon ID</option>
+      {{#each coupons}}
+      <option value='{{this.couponID}}'>ID: {{this.couponID}} (Exp: {{this.expirationDate}})</option>
+      {{/each}}
+    </select>
+
+    <label for='update_expirationDate'>New Expiration Date: </label>
+    <input type='date' name='update_expirationDate' id='update_expirationDate' required />
+
+    <input type='submit' value="Update Expiration" />
+</form>
+
+  <script src="./public/update_coupon.js"></script>
+  <script src="./public/delete_coupon.js"</script>
+
+{{!--
+        Citation for use of AI Tools:
+        Date: 02/08/2026
+        Prompts used to generate handlebars script
+        Write a handlebars script for CS340 OSU Project 3 for the Coupon Entity from the DDL Database (pasted in prompt)
+        AI Source URL: https://gemini.google.com/
+        Links to an external site.
+--}}
