@@ -10,6 +10,7 @@ app.use(express.static("public"));
 
 const PORT = 55902;
 
+
 // Database connection
 const db = require('./database/db-connector');
 
@@ -34,13 +35,13 @@ app.get('/members', async (req, res) => {
     try {
         const queryMembers = `
             SELECT memberID, firstName, lastName, email, phoneNumber
-            FROM members
+            FROM Members
             ORDER BY lastName ASC;
         `;
 
         const queryMembers2 = `
             SELECT *
-            FROM members;
+            FROM Members;
         `;
 
         // Execute queries
@@ -142,8 +143,3 @@ app.delete('/members/:id', async (req, res) => {
 app.listen(PORT, () => {
     console.log(`Server started at http://localhost:${PORT}`);
 });
-
-// Citation
-// Date: 2/01/2026
-// Adapted from:
-// https://canvas.oregonstate.edu/courses/2031764/pages/exploration-overview-of-the-web-application-development-process?module_item_id=26243420
