@@ -10,96 +10,143 @@ app.use(express.static("public"));
 
 const PORT = 55902;
 
-// Database
-const db = require("./database/db-connector");
+// Database connection
+const db = require('./database/db-connector');
 
 // Handlebars
-const { engine } = require("express-handlebars"); // Import express-handlebars engine
-app.engine(".hbs", engine({ extname: ".hbs" })); // Create instance of handlebars
-app.set("view engine", ".hbs"); // Use handlebars engine for *.hbs files.
+const { engine } = require('express-handlebars');
+app.engine('.hbs', engine({ extname: '.hbs' }));
+app.set('view engine', '.hbs');
 
 // ########################################
-// ########## ROUTE HANDLERS
+// ########## ROUTE HANDLERS (READ-ONLY FOR STEP 3)
 
-// READ ROUTES
-app.get("/", async function (req, res) {
+app.get('/', async (req, res) => {
     try {
-        res.render("home"); // Render the home.hbs file
+        res.render('home');
     } catch (error) {
-        console.error("Error rendering page:", error);
-        // Send a generic error message to the browser
-        res.status(500).send("An error occurred while rendering the page.");
+        console.error('Error rendering home:', error);
+        res.status(500).send('Error rendering page.');
     }
 });
 
-app.get("/bsg-people", async function (req, res) {
+app.get('/members', async (req, res) => {
     try {
-        // Create and execute our queries
-        const query1 = `SELECT memberID, firstName, lastName, email, phoneNumber FROM members ORDER BY lastName ASC;`;
-        const query2 = "SELECT * FROM members;";
-        const [orders] = await db.query(query1);
-        const [books] = await db.query(query2);
+        const queryMembers = `
+            SELECT memberID, firstName, lastName, email, phoneNumber
+            FROM members
+            ORDER BY lastName ASC;
+        `;
 
-        res.render("members", { orders: orders, books: books });
+        const queryMembers2 = `
+            SELECT *
+            FROM members;
+        `;
+
+        // Execute queries
+        const [members] = await db.query(queryMembers);
+        const [members2] = await db.query(queryMembers2);
+
+        // Render page and pass data
+        res.render('members', {
+            members: members,
+            members2: members2
+        });
+
     } catch (error) {
-        console.error("Error executing queries:", error);
-        // Send a generic error message to the browser
-        res.status(500).send(
-            "An error occurred while executing the database queries.",
-        );
+        console.error('Detailed Error:', error);
+        res.status(500).send('Database error while retrieving members.');
     }
 });
 
-app.get("/books", async function (req, res) {
+// ########################################
+// ########## MEMBER CRUD ROUTES
+// ########################################
+
+
+// CREATE MEMBER  (POST /members)
+app.post('/members', async (req, res) => {
     try {
-        res.render("books"); // Render the books.hbs file
+        const query = `
+            INSERT INTO Members (firstName, lastName, phoneNumber, email)
+            VALUES (?, ?, ?, ?);
+        `;
+
+        const params = [
+            req.body.firstName,
+            req.body.lastName,
+            req.body.phoneNumber,
+            req.body.email
+        ];
+
+        await db.query(query, params);
+        res.redirect('/members');
+
     } catch (error) {
-        console.error("Error rendering page:", error);
-        // Send a generic error message to the browser
-        res.status(500).send("An error occurred while rendering the page.");
+        console.error("Error inserting member:", error);
+        res.status(500).send("Failed to create member.");
     }
 });
 
-app.get("/coupons", async function (req, res) {
+
+
+// UPDATE MEMBER (PUT /members/:id)
+app.put('/members/:id', async (req, res) => {
     try {
-        res.render("coupons"); // Render the coupons.hbs file
+        const query = `
+            UPDATE Members
+            SET phoneNumber = ?, email = ?
+            WHERE memberID = ?;
+        `;
+
+        const params = [
+            req.body.phoneNumber,
+            req.body.email,
+            req.params.id
+        ];
+
+        await db.query(query, params);
+
+        res.json({ success: true });
+
     } catch (error) {
-        console.error("Error rendering page:", error);
-        // Send a generic error message to the browser
-        res.status(500).send("An error occurred while rendering the page.");
+        console.error("Error updating member:", error);
+        res.status(500).send("Failed to update member.");
     }
 });
 
-app.get("/orders", async function (req, res) {
+
+
+// DELETE MEMBER (DELETE /members/:id)
+app.delete('/members/:id', async (req, res) => {
     try {
-        res.render("orders"); // Render the orders.hbs file
+        const query = `
+            DELETE FROM Members
+            WHERE memberID = ?;
+        `;
+
+        await db.query(query, [req.params.id]);
+
+        res.json({ success: true });
+
     } catch (error) {
-        console.error("Error rendering page:", error);
-        // Send a generic error message to the browser
-        res.status(500).send("An error occurred while rendering the page.");
+        console.error("Error deleting member:", error);
+        res.status(500).send("Failed to delete member.");
     }
 });
 
-app.get("/members", async function (req, res) {
-    try {
-        res.render("members"); // Render the members.hbs file
-    } catch (error) {
-        console.error("Error rendering page:", error);
-        // Send a generic error message to the browser
-        res.status(500).send("An error occurred while rendering the page.");
-    }
-});
 
 // ########################################
 // ########## LISTENER
 
-app.listen(PORT, function () {
-    console.log(
-        "Express started on http://localhost:" +
-            PORT +
-            "; press Ctrl-C to terminate.",
-    );
+app.listen(PORT, () => {
+    console.log(`Server started at http://localhost:${PORT}`);
 });
+
+// Citation
+// Date: 2/01/2026
+// Adapted from:
+// https://canvas.oregonstate.edu/courses/2031764/pages/exploration-overview-of-the-web-application-development-process?module_item_id=26243420
 
 // Citation for the following function:
 // Date: 2/01/2026
