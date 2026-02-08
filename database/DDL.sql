@@ -3,7 +3,7 @@ SET AUTOCOMMIT = 0;
 
 -- Create TABLE members
 
-CREATE TABLE IF NOT EXISTS members (
+CREATE TABLE IF NOT EXISTS Members (
   memberID INT(11) NOT NULL AUTO_INCREMENT,
   firstName VARCHAR(45) NOT NULL,
   lastName VARCHAR(45) NOT NULL,
@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS members (
 
 -- CREATE TABLE books
 
-CREATE TABLE IF NOT EXISTS books (
+CREATE TABLE IF NOT EXISTS Books (
   ISBN VARCHAR(50) NOT NULL,
   title VARCHAR(50) NOT NULL,
   author VARCHAR(50) NOT NULL,
@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS books (
 
 -- CREATE TABLE coupons
 
-CREATE TABLE IF NOT EXISTS coupons (
+CREATE TABLE IF NOT EXISTS Coupons (
   couponID INT(11) NOT NULL AUTO_INCREMENT,
   couponDiscount DECIMAL(19,2) NOT NULL,
   expirationDate DATE NOT NULL,
@@ -32,57 +32,56 @@ CREATE TABLE IF NOT EXISTS coupons (
 
 -- CREATE TABLE orders
 
-CREATE TABLE IF NOT EXISTS orders (
+CREATE TABLE IF NOT EXISTS Orders (
   orderID INT(11) NOT NULL AUTO_INCREMENT,
   totalPrice DECIMAL(19,2) NOT NULL,
   couponID INT(11) NOT NULL,
   memberID INT(11) NOT NULL,
   PRIMARY KEY (orderID),
-  CONSTRAINT couponID
+  CONSTRAINT fk_couponID
     FOREIGN KEY (couponID)
     REFERENCES coupons(couponID)
     ON DELETE CASCADE,
-  CONSTRAINT memberID
+  CONSTRAINT fk_memberID
     FOREIGN KEY (memberID)
     REFERENCES members (memberID)
     ON DELETE CASCADE);
 
 -- CREATE TABLE booksAndOrders
 
-CREATE TABLE IF NOT EXISTS booksAndOrders (
+CREATE TABLE IF NOT EXISTS BooksAndOrders (
   booksAndOrdersID INT(11) NOT NULL AUTO_INCREMENT,
   ISBN VARCHAR(50) NOT NULL,
   orderID INT(11) NOT NULL,
   QTY INT(11) NOT NULL,
   cost DECIMAL(19,2) NOT NULL,
   PRIMARY KEY (booksAndOrdersID),
-  CONSTRAINT ISBN
+  CONSTRAINT fk_ISBN
     FOREIGN KEY (ISBN)
     REFERENCES books (ISBN)
     ON DELETE CASCADE,
-  CONSTRAINT orderID
+  CONSTRAINT fk_orderID
     FOREIGN KEY (orderID)
     REFERENCES orders (orderID)
     ON DELETE CASCADE);
 
 -- INSERT data into members TABLE
 
-INSERT INTO members (
-      memberID,
+INSERT INTO Members (
       firstName,
       lastName,
       phoneNumber,
       email
     )
 VALUES
-    (1, 'Alisha', 'Dickson', '971-239-9898', 'dickson.a@gmail.com'),
-    (2, 'Edward', 'Harrington', '503-827-2019', 'harrington.e@outlook.com'),
-    (3, 'Jamal', 'Malicena', '541-920-8201', 'jamal.malicena@hotmail.com'),
-    (4, 'Tamara', 'Fenrick', '503-201-2232', 'fenrick.tamara@proton.me');
+    ('Alisha', 'Dickson', '971-239-9898', 'dickson.a@gmail.com'),
+    ('Edward', 'Harrington', '503-827-2019', 'harrington.e@outlook.com'),
+    ('Jamal', 'Malicena', '541-920-8201', 'jamal.malicena@hotmail.com'),
+    ('Tamara', 'Fenrick', '503-201-2232', 'fenrick.tamara@proton.me');
 
 -- INSERT data into books TABLE
 
-INSERT INTO books (
+INSERT INTO Books (
       ISBN,
       title,
       author,
@@ -99,50 +98,47 @@ VALUES
     
 -- INSERT data into coupons TABLE
 
-INSERT INTO coupons (
-      couponID,
+INSERT INTO Coupons (
       couponDiscount,
       expirationDate
     )
 VALUES
     (
-      1, '2.00', '2026-05-10',
+      '2.00', '2026-05-10'
     ),
     (
-      2, '4.00', '2026-04-30' 
+      '4.00', '2026-04-30' 
     ),
     (
-      3, '6.00', '2026-04-15'
+      '6.00', '2026-04-15'
     ),
     (
-      4, '4.00', '2026-03-14'
+      '4.00', '2026-03-14'
     );
 
 -- INSERT data into orders TABLE
 
-INSERT INTO orders (
-      orderID,
+INSERT INTO Orders (
       totalPrice,
       couponID,
       memberID
     )
 VALUES
     (
-      1, '6.97', 1, 1
+      '6.97', 1, 1
     ),
     (
-      2, '11.98', 2, 2
+      '11.98', 2, 2
     ),
     (
-      3, '11.99', 3, 3
+      '11.99', 3, 3
     ),
     (
-      4, '22.78', 4, 4
+      '22.78', 4, 4
     );
 
 -- INSERT data into booksAndOrders TABLE
-INSERT INTO booksAndOrders (
-      booksAndOrdersID,
+INSERT INTO BooksAndOrders (
       ISBN,
       orderID,
       QTY,
@@ -150,19 +146,19 @@ INSERT INTO booksAndOrders (
     )
 VALUES
     (
-      1, '9780316580571', 1, 1, '4.99'
+      '9780316580571', 1, 1, '4.99'
     ),
     (
-      2, '9780345384362', 1, 2, '1.99'
+      '9780345384362', 1, 2, '1.99'
     ),
     (
-      3, '9788284321318', 2, 2, '7.99'
+      '9788284321318', 2, 2, '7.99'
     ),
     (
-      4, '9780316569842', 3, 1, '14.99'
+      '9780316569842', 3, 1, '14.99'
     ),
     (
-      5, '9788501116536', 4, 2, '11.89'
+      '9788501116536', 4, 2, '11.89'
     );
 SET FOREIGN_KEY_CHECKS=1;
 COMMIT;
