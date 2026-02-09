@@ -14,18 +14,18 @@
         </tr>
     </thead>
 
-    <tbody>
-        {{! For each row, print the id, firstName, lastName, phoneNumber, email }}
-        {{#each members}}
-        <tr>
-            <td>{{this.memberID}}</td>
-            <td>{{this.firstName}}</td>
-            <td>{{this.lastName}}</td>
-            <td>{{this.phoneNumber}}</td>
-            <td>{{this.email}}</td>
-            
-            <button type="button" onclick="deleteMember({{this.memberID}})">Delete</button>
-        </tr>
+<tbody>
+    {{#each members}}
+    <tr>
+        <td>{{this.memberID}}</td>
+        <td>{{this.firstName}}</td>
+        <td>{{this.lastName}}</td>
+        <td>{{this.phoneNumber}}</td>
+        <td>{{this.email}}</td>
+        <td>
+            <button class="btn-delete" onclick="deleteMember({{this.memberID}})">Delete</button>
+        </td>
+    </tr>
         {{/each}}
     </tbody>
 </table>
@@ -50,25 +50,39 @@
 
 {{! UPDATE form }}
 <h2>Update a Member</h2>
-<form class='cuForm' id='update_member_form'>
+<form class='cuForm' id='update-member-form'>
     <label for='update_member_id'>Member to Update: </label>
-    <select name='update_member_id' id='update_member_id' required>
+    <select name='update_member_id' id='update_member_id' required onchange="const o=this.options[this.selectedIndex]; showUpdateMember(o.value, o.getAttribute('data-fname'), o.getAttribute('data-lname'), o.getAttribute('data-phone'), o.getAttribute('data-email'))">
         <option value='' disabled selected>Select a Member</option>
         {{#each members}}
-        <option value='{{this.memberID}}' required>
-            {{this.memberID}}
-            -
-            {{this.firstName}}
-            {{this.lastName}}
+        <option value='{{this.memberID}}' data-fname='{{this.firstName}}' data-lname='{{this.lastName}}' data-phone='{{this.phoneNumber}}' data-email='{{this.email}}'>
+            {{this.memberID}} - {{this.firstName}} {{this.lastName}}
         </option>
         {{/each}}
     </select>
 
-    <label for='phoneNumber'>Phone Number: </label>
-    <input type='text' name='phoneNumber' id='update_phoneNumber' />
+    <label for='update-fname'>First Name: </label>
+    <input type='text' name='firstName' id='update-fname' autocomplete='given-name' />
 
-    <label for='email'>Email: </label>
-    <input type='text' name='email' id='update_email' />
+    <label for='update-lname'>Last Name: </label>
+    <input type='text' name='lastName' id='update-lname' autocomplete='family-name' />
 
+    <label for='update-phone'>Phone Number: </label>
+    <input type='text' name='phoneNumber' id='update-phone' autocomplete='tel' />
+
+    <label for='update-email'>Email: </label>
+    <input type='email' name='email' id='update-email' autocomplete='email' />
+
+    <input type='hidden' id='update-id' name='memberID' />
     <input type='submit' value="Update Member"/>
 </form>
+
+<script src="/js/update_member.js"></script>
+<script src="/js/delete_member.js"></script>
+
+{{!--
+Citation for the following function:
+Date: 2/01/2026
+Copied from /OR/ Adapted from /OR/ Based on:
+Source URL: https://canvas.oregonstate.edu/courses/2031764/pages/exploration-overview-of-the-web-application-development-process?module_item_id=26243420
+--}}
