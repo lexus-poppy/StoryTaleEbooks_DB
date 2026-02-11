@@ -36,23 +36,23 @@
 {{! CREATE form }}
 <h2>Add a New Book</h2>
 <form action="/books" method="POST" id="add-book-form">
-    <label for='ISBN'>ISBN: </label>
-    <input type='text' name='ISBN' id='ISBN' autocomplete='off' required />
+    <label for='isbnInput'>ISBN: </label>
+    <input type='text' name='isbnInput' id='isbnInput' autocomplete='off' required />
 
-    <label for='title'>Title: </label>
-    <input type='text' name='title' id='title' autocomplete='off' required />
+    <label for='titleInput'>Title: </label>
+    <input type='text' name='titleInput' id='titleInput' autocomplete='off' required />
 
-    <label for='author'>Author: </label>
-    <input type='text' name='author' id='author' autocomplete='off' required />
+    <label for='authorInput'>Author: </label>
+    <input type='text' name='authorInput' id='authorInput' autocomplete='off' required />
 
-    <label for='publisher'>Publisher: </label>
-    <input type='text' name='publisher' id='publisher' autocomplete='off' />
+    <label for='publisherInput'>Publisher: </label>
+    <input type='text' name='publisherInput' id='publisherInput' autocomplete='off' />
 
-    <label for='publishedDate'>Published Date: </label>
-    <input type='date' name='publishedDate' id='publishedDate' autocomplete='off' />
+    <label for='publishedDateInput'>Published Date: </label>
+    <input type='date' name='publishedDateInput' id='publishedDateInput' autocomplete='off' />
 
-    <label for='genre'>Genre: </label>
-    <input type='text' name='genre' id='genre' autocomplete='off' required />
+    <label for='genreInput'>Genre: </label>
+    <input type='text' name='genreInput' id='genreInput' autocomplete='off' required />
 
     <input type='submit' value="Add Book"/>
 </form>
@@ -63,7 +63,7 @@
 <form class='cuForm' id='update-book-form'>
 
     <label for='update-isbn-select'>Book to Update (ISBN): </label>
-    <select name='update_isbn' id='update-isbn-select' required>
+    <select name='isbnInput' id='update-isbn-select' required>
         <option value='' selected>Select a Book</option>
         {{#each books}}
         <option value='{{this.ISBN}}'
@@ -78,19 +78,19 @@
     </select>
 
     <label for='update-title'>Title: </label>
-    <input type='text' name='update_title' id='update-title' autocomplete='off' required />
+    <input type='text' name='titleInput' id='update-title' autocomplete='off' required />
 
     <label for='update-author'>Author: </label>
-    <input type='text' name='update_author' id='update-author' autocomplete='off' required />
+    <input type='text' name='authorInput' id='update-author' autocomplete='off' required />
 
     <label for='update-publisher'>Publisher: </label>
-    <input type='text' name='update_publisher' id='update-publisher' autocomplete='off' />
+    <input type='text' name='publisherInput' id='update-publisher' autocomplete='off' />
 
     <label for='update-publishedDate'>Published Date: </label>
-    <input type='date' name='update_publishedDate' id='update-publishedDate' autocomplete='off' />
+    <input type='date' name='publishedDateInput' id='update-publishedDate' autocomplete='off' />
 
     <label for='update-genre'>Genre: </label>
-    <input type='text' name='update_genre' id='update-genre' autocomplete='off' required />
+    <input type='text' name='genreInput' id='update-genre' autocomplete='off' required />
 
     <input type='submit' value="Update Book"/>
 </form>
