@@ -54,7 +54,6 @@ CREATE TABLE IF NOT EXISTS BooksAndOrders (
   ISBN VARCHAR(50) NOT NULL,
   orderID INT(11) NOT NULL,
   QTY INT(11) NOT NULL,
-  cost DECIMAL(19,2) NOT NULL,
   PRIMARY KEY (booksAndOrdersID),
   CONSTRAINT fk_ISBN
     FOREIGN KEY (ISBN)
@@ -141,24 +140,23 @@ VALUES
 INSERT INTO BooksAndOrders (
       ISBN,
       orderID,
-      QTY,
-      cost
+      QTY
     )
 VALUES
     (
-      '9780316580571', 1, 1, '4.99'
+      '9780316580571', 1, 1
     ),
     (
-      '9780345384362', 1, 2, '1.99'
+      '9780345384362', 1, 2
     ),
     (
-      '9788284321318', 2, 2, '7.99'
+      '9788284321318', 2, 2
     ),
     (
-      '9780316569842', 3, 1, '14.99'
+      '9780316569842', 3, 1
     ),
     (
-      '9788501116536', 4, 2, '11.89'
+      '9788501116536', 4, 2
     );
 SET FOREIGN_KEY_CHECKS=1;
 COMMIT;
