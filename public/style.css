@@ -134,3 +134,62 @@ th, td {
       # Write a .css file that is pretty for a book themed project for CS340 Project 3
       # AI Source URL: https://gemini.google.com/
 */
+
+nav {
+    background-color: #d9d9d9;
+    border: #3498db solid 2px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    padding: 15px 20px;
+    width: fit-content;
+}
+
+nav a {
+    color: #555;
+    text-decoration: none;
+    margin-right: 20px;
+    transition: color 0.3s ease;
+    position: relative;
+    display: inline-block;
+    padding-bottom: 5px;
+    font-size: larger;
+}
+
+nav a::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background-color: #3498db;
+    transform: translateX(-50%);
+    transition: width 0.3s ease;
+}
+
+nav a:hover {
+    color: #3498db;
+}
+
+nav a:hover::after {
+    width: 100%;
+}
+
+/*
+Citation for use of AI Tools:
+      # Date: 2/12/2026
+      # Prompts used to generate a .css file
+      # Add some simple styling to the nav styling and an underline on hover on nav links
+      # The underlines should animate in from the middle and be a bit further below the links
+      # AI Source URL: https://claude.ai/
+*/
+
+nav h1 {
+    margin: 0;
+    color: #0d2d3d;
+    font-size: 1.5rem;
+    font-weight: bold;
+    display: inline-block;
+    margin-right: 30px;
+    border-bottom: none;
+}
