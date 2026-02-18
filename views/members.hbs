@@ -24,7 +24,10 @@
         <td>{{this.phoneNumber}}</td>
         <td>{{this.email}}</td>
         <td>
-            <button class="btn-delete" onclick="deleteMember({{this.memberID}})">Delete</button>
+            <form id="delete-member-form" method="POST" action="/members/delete">
+                <input type="hidden" name="delete_member_id" value="{{this.memberID}}" />
+                <button class="btn-delete" type="submit">Delete</button>
+            </form>
         </td>
 
     </tr>
@@ -34,7 +37,7 @@
 
 {{! CREATE form }}
 <h2>Create a Member</h2>
-<form action="/members" method="POST" id="add-member-form">
+<form class="cuForm" id="add-member-form" method="POST" action="/members">
     <label for='fNameInput'>First Name: </label>
     <input type='text' name='fNameInput' id='fNameInput' autocomplete='given-name' required />
 
@@ -52,35 +55,30 @@
 
 {{! UPDATE form }}
 <h2>Update a Member</h2>
-<form class='cuForm' id='update-member-form'>
-    <label for='update_member_id'>Member to Update: </label>
-    <select name='update_member_id' id='update_member_id' required onchange="const o=this.options[this.selectedIndex]; showUpdateMember(o.value, o.getAttribute('data-fname'), o.getAttribute('data-lname'), o.getAttribute('data-phone'), o.getAttribute('data-email'))">
-        <option value='' disabled selected>Select a Member</option>
+<form class='cuForm' id='update-member-form' method="POST" action="/members/update">
+    <label>Member:</label>
+    <select name="update_member_id" required>
+        <option value="" disabled selected>Select a Member</option>
         {{#each members}}
-        <option value='{{this.memberID}}' data-fname='{{this.firstName}}' data-lname='{{this.lastName}}' data-phone='{{this.phoneNumber}}' data-email='{{this.email}}'>
+        <option value="{{this.memberID}}">
             {{this.memberID}} - {{this.firstName}} {{this.lastName}}
         </option>
         {{/each}}
-    </select>
-
-    <label for='update-fname'>First Name: </label>
-    <input type='text' name='fNameInput' id='update-fname' autocomplete='given-name' />
-
-    <label for='update-lname'>Last Name: </label>
-    <input type='text' name='lNameInput' id='update-lname' autocomplete='family-name' />
-
-    <label for='update-phone'>Phone Number: </label>
-    <input type='text' name='phoneInput' id='update-phone' autocomplete='tel' />
-
-    <label for='update-email'>Email: </label>
-    <input type='email' name='emailInput' id='update-email' autocomplete='email' />
-
-    <input type='hidden' id='update-id' name='memberIDInput' />
-    <input type='submit' value="Update Member"/>
+        </select>
+    <label>First Name:</label>
+    <input type="text" name="update_member_firstName" required>
+    <label>Last Name:</label>
+    <input type="text" name="update_member_lastName" required>
+    <label>Phone:</label>
+    <input type="text" name="update_member_phoneNumber" required>
+    <label>Email:</label>
+    <input type="email" name="update_member_email" required>
+    
+    <input type="submit" value="Update Member">
 </form>
 
-<script src="/js/update_member.js"></script>
-<script src="/js/delete_member.js"></script>
+<!-- <script src="/js/update_member.js"></script> -->
+<!-- <script src="/js/delete_member.js"></script> -->
 
 {{!--
         Citation for use of AI Tools:
