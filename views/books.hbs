@@ -11,7 +11,6 @@
                 {{@key}}
             </th>
             {{/each}}
-            <th>Actions</th>
         </tr>
     </thead>
 
@@ -24,9 +23,6 @@
             <td>{{this.publisher}}</td>
             <td>{{this.publishedDate}}</td>
             <td>{{this.genre}}</td>
-            <td>
-                <button type="button" onclick="deleteBook('{{this.isbn}}')">Delete</button>
-            </td>
         </tr>
         {{/each}}
     </tbody>
@@ -59,20 +55,20 @@
 
 {{! UPDATE form }}
 <h2>Update a Book</h2>
-<p>To update a book, select its title from the dropdown and update the fields below.</p>
-<form class='cuForm' id='update-book-form'>
+<form class='cuForm' id='update-book-form' method="POST" action="/books/update">
 
     <label for='update-isbn-select'>Book to Update (ISBN): </label>
     <select name='isbnInput' id='update-isbn-select' required>
-        <option value='' selected>Select a Book</option>
+        <option value='' disabled selected>-- Select a Book --</option>
         {{#each books}}
-        <option value='{{this.ISBN}}'
+        {{! Note: use this.isbn (lowercase) if that is how it comes from your SELECT query }}
+        <option value='{{this.isbn}}'
             data-title='{{this.title}}'
             data-author='{{this.author}}'
             data-publisher='{{this.publisher}}'
             data-publisheddate='{{this.publishedDate}}'
             data-genre='{{this.genre}}'>
-            {{this.title}} ({{this.ISBN}})
+            {{this.title}} ({{this.isbn}})
         </option>
         {{/each}}
     </select>
@@ -95,53 +91,23 @@
     <input type='submit' value="Update Book"/>
 </form>
 
-<script>
-// Auto-fill update form fields when a book is selected
-document.addEventListener('DOMContentLoaded', function() {
-    const select = document.getElementById('update-isbn-select');
-    const titleInput = document.getElementById('update-title');
-    const authorInput = document.getElementById('update-author');
-    const publisherInput = document.getElementById('update-publisher');
-    const publishedDateInput = document.getElementById('update-publishedDate');
-    const genreInput = document.getElementById('update-genre');
-
-    select.addEventListener('change', function() {
-        const selected = select.options[select.selectedIndex];
-        // Set all fields
-        titleInput.value = selected.getAttribute('data-title') || '';
-        authorInput.value = selected.getAttribute('data-author') || '';
-        publisherInput.value = selected.getAttribute('data-publisher') || '';
-        // Format date to yyyy-MM-dd if possible
-        let rawDate = selected.getAttribute('data-publisheddate') || '';
-        if (rawDate) {
-            // Try to parse and format
-            let dateObj = new Date(rawDate);
-            if (!isNaN(dateObj)) {
-                let yyyy = dateObj.getFullYear();
-                let mm = String(dateObj.getMonth() + 1).padStart(2, '0');
-                let dd = String(dateObj.getDate()).padStart(2, '0');
-                publishedDateInput.value = `${yyyy}-${mm}-${dd}`;
-            } else {
-                publishedDateInput.value = '';
-            }
-        } else {
-            publishedDateInput.value = '';
-        }
-        genreInput.value = selected.getAttribute('data-genre') || '';
-        // Debug log
-        console.log('Dropdown autofill:', {
-            isbn: select.value,
-            title: titleInput.value,
-            author: authorInput.value,
-            publisher: publisherInput.value,
-            publishedDate: publishedDateInput.value,
-            genre: genreInput.value
-        });
-    });
-});
-</script>
-<script src="/js/update_book.js"></script>
-<script src="/js/delete_book.js"></script>
+{{! DELETE form }}
+<h2>Delete a Book</h2>
+<p>Warning: Deleting a book will also remove it from any existing orders.</p>
+<form id="delete-book-form" method="POST" action="/books/delete">
+    <label for="delete-isbn-select">Select Book to Delete: </label>
+    <select name="isbnInput" id="delete-isbn-select" required>
+        <option value="" disabled selected>-- Select a Book --</option>
+        {{#each books}}
+            {{! Note: use lowercase 'this.isbn' to match your app.get results }}
+            <option value="{{this.isbn}}">
+                {{this.title}} (ISBN: {{this.isbn}})
+            </option>
+        {{/each}}
+    </select>
+    
+    <input type="submit" value="Delete Book" onclick="return confirm('Are you sure you want to permanently delete this book?')">
+</form>
 
 {{!--
         Citation for use of AI Tools:
