@@ -114,14 +114,6 @@
         {{/each}}
     </select>
 
-    <label for="update_orderID">New Order ID: </label>
-    <select name="orderIDInput" id="update_orderID" required>
-        <option value="" disabled selected>Select an Order</option>
-        {{#each orders}}
-        <option value="{{this.orderID}}">Order #{{this.orderID}}</option>
-        {{/each}}
-    </select>
-
     <label for="update_ISBN">New Book: </label>
     <select name="isbnInput" id="update_ISBN" required>
         <option value="" disabled selected>Select a Book</option>
