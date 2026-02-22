@@ -99,11 +99,12 @@ CREATE PROCEDURE sp_CreateBook(
     IN p_author VARCHAR(50),
     IN p_publisher VARCHAR(50),
     IN p_publishedDate DATE,
-    IN p_genre VARCHAR(45)
+    IN p_genre VARCHAR(45),
+    IN p_bookCost DECIMAL(19,2)
 )
 BEGIN
-    INSERT INTO Books (ISBN, title, author, publisher, publishedDate, genre)
-    VALUES (p_ISBN, p_title, p_author, p_publisher, p_publishedDate, p_genre);
+    INSERT INTO Books (ISBN, title, author, publisher, publishedDate, genre, bookCost)
+    VALUES (p_ISBN, p_title, p_author, p_publisher, p_publishedDate, p_genre, p_bookCost);
 
     -- Return the ISBN of the newly created book for confirmation
     SELECT p_ISBN AS 'new_isbn';
@@ -123,7 +124,8 @@ CREATE PROCEDURE sp_UpdateBook(
     IN p_author VARCHAR(50),
     IN p_publisher VARCHAR(50),
     IN p_publishedDate DATE,
-    IN p_genre VARCHAR(45)
+    IN p_genre VARCHAR(45),
+    IN p_bookCost DECIMAL(19,2)
 )
 BEGIN
     UPDATE Books 
@@ -131,7 +133,8 @@ BEGIN
         author = p_author, 
         publisher = p_publisher, 
         publishedDate = p_publishedDate, 
-        genre = p_genre 
+        genre = p_genre,
+        bookCost = p_bookCost
     WHERE ISBN = p_ISBN;
 END //
 DELIMITER ;
@@ -302,5 +305,90 @@ DECLARE error_message VARCHAR(255);
         END IF;
 
     COMMIT;
+END //
+DELIMITER ;
+
+-- Recalculation procedure to update totalPrice in Orders after changes in BooksAndOrders
+DROP PROCEDURE IF EXISTS sp_RecalculateOrderTotal;
+DELIMITER //
+
+CREATE PROCEDURE sp_RecalculateOrderTotal(IN p_orderID INT)
+BEGIN
+    DECLARE discount DECIMAL(19,2) DEFAULT 0;
+
+    -- Get coupon discount if applicable
+    SELECT IFNULL(c.couponDiscount, 0)
+    INTO discount
+    FROM Orders o
+    LEFT JOIN Coupons c ON o.couponID = c.couponID
+    WHERE o.orderID = p_orderID;
+
+    -- Compute subtotal (QTY × bookCost)
+    UPDATE Orders
+    SET totalPrice = GREATEST((
+        SELECT IFNULL(SUM(bao.QTY * b.bookCost), 0)
+        FROM BooksAndOrders bao
+        JOIN Books b ON bao.ISBN = b.ISBN
+        WHERE bao.orderID = p_orderID
+    ) - discount, 0)     -- Never allow negative total
+    WHERE orderID = p_orderID;
+END //
+
+DELIMITER ;
+
+-- After inserting from BooksAndOrders, we need to recalculate the total price of the associated order.
+DROP TRIGGER IF EXISTS trg_bao_after_insert;
+DELIMITER //
+CREATE TRIGGER trg_bao_after_insert
+AFTER INSERT ON BooksAndOrders
+FOR EACH ROW
+BEGIN
+    CALL sp_RecalculateOrderTotal(NEW.orderID);
+END //
+DELIMITER ;
+
+-- After Update trigger to handle changes in QTY or ISBN (which could change bookCost)
+DROP TRIGGER IF EXISTS trg_bao_after_update;
+DELIMITER //
+CREATE TRIGGER trg_bao_after_update
+AFTER UPDATE ON BooksAndOrders
+FOR EACH ROW
+BEGIN
+    CALL sp_RecalculateOrderTotal(NEW.orderID);
+END //
+DELIMITER ;
+
+-- After Delete trigger to handle removal of items from an order
+DROP TRIGGER IF EXISTS trg_bao_after_delete;
+DELIMITER //
+CREATE TRIGGER trg_bao_after_delete
+AFTER DELETE ON BooksAndOrders
+FOR EACH ROW
+BEGIN
+    CALL sp_RecalculateOrderTotal(OLD.orderID);
+END //
+DELIMITER ;
+
+-- If an order's couponID is updated, we also need to recalculate the total price.
+DROP TRIGGER IF EXISTS trg_orders_after_update;
+DELIMITER //
+CREATE TRIGGER trg_orders_after_update
+AFTER UPDATE ON Orders
+FOR EACH ROW
+BEGIN
+    CALL sp_RecalculateOrderTotal(NEW.orderID);
+END //
+DELIMITER ;
+
+-- After updating a coupon's discount, we need to recalculate totals for all orders using that coupon.
+DROP TRIGGER IF EXISTS trg_coupons_after_update;
+DELIMITER //
+CREATE TRIGGER trg_coupons_after_update
+AFTER UPDATE ON Coupons
+FOR EACH ROW
+BEGIN
+    UPDATE Orders
+    SET totalPrice = totalPrice  -- Force a recalculation via trigger chain
+    WHERE couponID = NEW.couponID;
 END //
 DELIMITER ;
