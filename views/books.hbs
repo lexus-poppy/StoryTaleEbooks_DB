@@ -6,11 +6,13 @@
         <tr>
             {{! For the table header row, we print the DB attribute names }}
 
-            {{#each books.[0]}}
-            <th>
-                {{@key}}
-            </th>
-            {{/each}}
+            <th>ISBN</th>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Publisher</th>
+            <th>Published Date</th>
+            <th>Genre</th>
+            <th>Book Cost</th>
         </tr>
     </thead>
 
@@ -23,6 +25,7 @@
             <td>{{this.publisher}}</td>
             <td>{{this.publishedDate}}</td>
             <td>{{this.genre}}</td>
+            <td>{{this.bookCost}}</td>
         </tr>
         {{/each}}
     </tbody>
@@ -50,6 +53,9 @@
     <label for='genreInput'>Genre: </label>
     <input type='text' name='genreInput' id='genreInput' autocomplete='off' required />
 
+    <label for="bookCostInput">Book Cost ($): </label>
+    <input type="number" step="0.01" name="bookCostInput" id="bookCostInput" required/>
+
     <input type='submit' value="Add Book"/>
 </form>
 
@@ -67,7 +73,8 @@
             data-author='{{this.author}}'
             data-publisher='{{this.publisher}}'
             data-publisheddate='{{this.publishedDate}}'
-            data-genre='{{this.genre}}'>
+            data-genre='{{this.genre}}'
+            data-bookcost='{{this.bookCost}}'>
             {{this.title}} ({{this.isbn}})
         </option>
         {{/each}}
@@ -87,6 +94,9 @@
 
     <label for='update-genre'>Genre: </label>
     <input type='text' name='genreInput' id='update-genre' autocomplete='off' required />
+
+    <label for="bookCostInput">Book Cost ($): </label>
+    <input type="number" step="0.01" name="bookCostInput" id="bookCostInput" required />
 
     <input type='submit' value="Update Book"/>
 </form>
