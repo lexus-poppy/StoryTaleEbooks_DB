@@ -1,6 +1,12 @@
 SET FOREIGN_KEY_CHECKS=0;
 SET AUTOCOMMIT = 0;
 
+DROP TABLE IF EXISTS Members;
+DROP TABLE IF EXISTS BooksAndOrders;
+DROP TABLE IF EXISTS Orders;
+DROP TABLE IF EXISTS Books;
+DROP TABLE IF EXISTS Coupons;
+
 -- Create TABLE members
 
 CREATE TABLE IF NOT EXISTS Members (
@@ -20,6 +26,7 @@ CREATE TABLE IF NOT EXISTS Books (
   publisher VARCHAR(50) NULL,
   publishedDate DATE NULL,
   genre VARCHAR(45) NOT NULL,
+  bookCost DECIMAL (19,2) NOT NULL,
   PRIMARY KEY (ISBN));
 
 -- CREATE TABLE coupons
@@ -41,8 +48,8 @@ CREATE TABLE IF NOT EXISTS Orders (
   CONSTRAINT fk_couponID
     FOREIGN KEY (couponID)
     REFERENCES coupons(couponID)
-    ON UPDATE CASCADE
-    ON DELETE CASCADE,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT fk_memberID
     FOREIGN KEY (memberID)
     REFERENCES members (memberID)
@@ -59,8 +66,8 @@ CREATE TABLE IF NOT EXISTS BooksAndOrders (
   CONSTRAINT fk_ISBN
     FOREIGN KEY (ISBN)
     REFERENCES books (ISBN)
-    ON UPDATE CASCADE
-    ON DELETE CASCADE,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT fk_orderID
     FOREIGN KEY (orderID)
     REFERENCES orders (orderID)
@@ -88,14 +95,15 @@ INSERT INTO Books (
       author,
       publisher,
       publishedDate,
-      genre
+      genre,
+      bookCost
     )
 VALUES
-    ('9780345384362', 'Intensity', 'Dean Koontz', 'Ballantine', '1996-01-01', 'Psychological Horror'),
-    ('9780316569842', 'Delusional', 'James Patterson', 'Little, Brown and Company', '2026-05-21', 'Police Procedural'),
-    ('9788284321318', 'Reminders of Him', 'Colleen Hoover', 'Montlake', '2022-01-18', 'Romance Novel'),
-    ('9788501116536', 'The Silent Patient', 'Alex Michaelides', 'Celadon Books', '2019-02-05', 'Thriller'),
-    ('9780316580571', 'Red Rabbit Ghost', 'Jen Julian', 'Orbit', '2025-07-22', 'Horror Fiction');
+    ('9780345384362', 'Intensity', 'Dean Koontz', 'Ballantine', '1996-01-01', 'Psychological Horror', 12.99),
+    ('9780316569842', 'Delusional', 'James Patterson', 'Little, Brown and Company', '2026-05-21', 'Police Procedural', 9.99),
+    ('9788284321318', 'Reminders of Him', 'Colleen Hoover', 'Montlake', '2022-01-18', 'Romance Novel', 13.47),
+    ('9788501116536', 'The Silent Patient', 'Alex Michaelides', 'Celadon Books', '2019-02-05', 'Thriller', 11.22),
+    ('9780316580571', 'Red Rabbit Ghost', 'Jen Julian', 'Orbit', '2025-07-22', 'Horror Fiction', 14.99);
     
 -- INSERT data into coupons TABLE
 
@@ -111,10 +119,10 @@ VALUES
       '4.00', '2026-04-30' 
     ),
     (
-      '6.00', '2026-04-15'
+      '5.00', '2026-04-15'
     ),
     (
-      '4.00', '2026-03-14'
+      '3.00', '2026-03-14'
     );
 
 -- INSERT data into orders TABLE
@@ -126,16 +134,16 @@ INSERT INTO Orders (
     )
 VALUES
     (
-      '6.97', 1, 1
+      '22.98', 3, 1
     ),
     (
-      '11.98', 2, 2
+      '11.47', 1, 2
     ),
     (
-      '11.99', 3, 3
+      '9.99', NULL, 3
     ),
     (
-      '22.78', 4, 4
+      '11.22', NULL, 4
     );
 
 -- INSERT data into booksAndOrders TABLE
