@@ -103,7 +103,9 @@ JOIN Orders ON BooksAndOrders.orderID = Orders.orderID;
 
 -- UPDATE
 UPDATE BooksAndOrders
-SET QTY = :qtyInput
+SET ISBN = :isbnInput,
+	orderID = :orderIDInput,
+	QTY = :qtyInput
 WHERE booksAndOrdersID = :booksAndOrdersID;
 
 -- DELETE

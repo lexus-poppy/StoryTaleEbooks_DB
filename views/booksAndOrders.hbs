@@ -104,8 +104,8 @@
 </form>
 
 {{! UPDATE form }}
-<h2>Update Line Item Cost</h2>
-<form id="update-line-item-form">
+<h2>Update Book/Order Line Item</h2>
+<form id="update-line-item-form" action="/booksAndOrders/update" method="POST">
     <label for="update_booksAndOrdersID">Line Item ID: </label>
     <select name="booksAndOrdersIDInput" id="update_booksAndOrdersID" required>
         <option value="" disabled selected>Select an ID</option>
@@ -114,16 +114,19 @@
         {{/each}}
     </select>
 
-    <label for="update_cost">New Unit Cost: </label>
-    <input type="number" step="0.01" name="costInput" id="update_cost" required />
+    <label for="update_ISBN">New Book: </label>
+    <select name="isbnInput" id="update_ISBN" required>
+        <option value="" disabled selected>Select a Book</option>
+        {{#each books}}
+        <option value="{{this.ISBN}}">{{this.title}} ({{this.ISBN}})</option>
+        {{/each}}
+    </select>
 
-    <button type="button" onclick="updateBooksAndOrders()">Update</button>
+    <label for="update_qty">New Quantity: </label>
+    <input type="number" name="qtyInput" id="update_qty" min="1" required />
+
+    <button type="submit">Update</button>
 </form>
-
-<script src="/js/new_order.js"></script>
-<script src="/js/create_books_orders.js"></script>
-<script src="/js/update_books_orders.js"></script>
-<script src="/js/delete_books_orders.js"></script>
 
 {{!--
         Citation for use of AI Tools:
